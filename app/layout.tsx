@@ -40,7 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 					content="width=device-width, initial-scale=1.0"
 				/>
 			</head>
-			<body className="flex min-h-full flex-col justify-center-safe text-center font-mono">
+			<body className="flex min-h-full flex-col place-items-center justify-center-safe text-center font-mono">
 				{children}
 			</body>
 		</html>
