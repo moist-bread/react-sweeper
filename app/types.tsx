@@ -3,6 +3,7 @@ export type GameStates = "before" | "during" | "lose" | "win";
 export type ClickType = "left" | "right" | "both";
 
 export type TileType =
+	| "X" /* BEFORE */
 	| " " /* EMPTY */
 	| "B" /* BOMB */
 	| 1
@@ -16,7 +17,7 @@ export type TileType =
 
 export type Tile = {
 	type: TileType;
-	mask: boolean | "flag"; // -- CHANGE THE MASK TO CONSIDER FLAGGING BOMB
+	mask: boolean | "flag"; // true: shown; false: covered; flag: covered w/ flag
 };
 
 export type Row = Array<Tile>;
