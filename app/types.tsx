@@ -21,3 +21,33 @@ export type Tile = {
 };
 
 export type Row = Array<Tile>;
+
+export type Field = Array<Row>;
+
+export type History = {
+	past: Field | null;
+	present: Field;
+	future: Field | null;
+};
+
+export enum Difficulty {
+	VERYHARD = 5,
+	HARD,
+	MEDIUM,
+	EASY,
+	VERYEASY,
+}
+
+export enum Size {
+	EXTRASMALL = 5,
+	SMALL = 10,
+	AVERAGE = 15,
+	LARGE = 30,
+	EXTRALARGE = 45,
+}
+
+export type Options = {
+	width: Size;
+	heigth: Size;
+	difficulty: Difficulty;
+};
