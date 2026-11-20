@@ -156,11 +156,11 @@ function BoardTile({
 
 	let content = <></>;
 	let style: string =
-		"flex select-none cursor-pointer place-items-center justify-center-safe rounded-sm font-mono  font-bold text-(--foreground) shadow-lg shadow-[#0d2a60]/30 text-shadow-lg";
+		"flex select-none cursor-pointer place-items-center justify-center-safe rounded-sm font-mono font-bold text-(--foreground) shadow-lg shadow-[#0d2a60]/60 text-shadow-lg";
 
-	if (options.heigth >= Size.LARGE) style += " size-5 text-md";
-	else if (options.width === Size.EXTRALARGE) style += " size-6 text-md";
-	else if (options.heigth === Size.AVERAGE) style += " size-7 text-xl";
+	if (options.heigth >= Size.LARGE) style += " size-4.5 text-xs rounded-xs!";
+	else if (options.width === Size.EXTRALARGE) style += " size-5 text-sm";
+	else if (options.heigth === Size.AVERAGE || options.width === Size.LARGE) style += " size-6 text-lg";
 	else style += " size-9 text-2xl";
 
 	if (tile.mask === true) {
@@ -171,7 +171,7 @@ function BoardTile({
 				<p>{tile.type}</p>
 			);
 		style +=
-			" border-3! border-(--foreground)! " +
+			" border-2! border-(--foreground)! " +
 			(tile.type === "B" ? "bg-[#cfd439]" : "bg-transparent");
 	} else if (tile.mask === "flag") {
 		content = <IconStar size={27} variant="outline" color="#7cc866" />;

@@ -27,7 +27,7 @@ export function OptionsForm({
 }) {
 	return (
 		<form
-			className="flex flex-row gap-5"
+			className="flex flex-col gap-5"
 			method="post"
 			onSubmit={(e: React.SubmitEvent) => {
 				e.preventDefault();
@@ -41,13 +41,13 @@ export function OptionsForm({
 			}}
 		>
 			<div className="flex flex-row gap-5">
-				<label className="flex w-1/3 flex-col">
+				<label className="flex flex-col">
 					HEIGTH:
 					<select
 						defaultValue={options.heigth}
 						id="heigth"
 						name="heigth"
-						className="w-xs cursor-pointer border bg-(--background) px-2 py-1"
+						className="w-xs cursor-pointer border px-2 py-1"
 						required
 					>
 						<option value={Size.EXTRASMALL}>
@@ -60,13 +60,13 @@ export function OptionsForm({
 				</label>
 			</div>
 			<div className="flex flex-row gap-5">
-				<label className="flex w-1/3 flex-col">
+				<label className="flex flex-col">
 					WIDTH:
 					<select
 						defaultValue={options.width}
 						id="width"
 						name="width"
-						className="w-xs cursor-pointer border bg-(--background) px-2 py-1"
+						className="w-xs cursor-pointer border px-2 py-1"
 						required
 					>
 						<option value={Size.EXTRASMALL}>
@@ -83,13 +83,13 @@ export function OptionsForm({
 			</div>
 
 			<div className="flex flex-row gap-5">
-				<label className="flex w-1/3 flex-col">
+				<label className="flex flex-col">
 					DIFFICULTY:
 					<select
 						defaultValue={options.difficulty}
 						id="difficulty"
 						name="difficulty"
-						className="w-xs cursor-pointer border bg-(--background) px-2 py-1"
+						className="w-xs cursor-pointer border px-2 py-1"
 						required
 					>
 						<option value={Difficulty.VERYEASY}>VERY EASY</option>

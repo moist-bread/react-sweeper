@@ -17,14 +17,14 @@ import { Device, SideButtons, Display } from "./device";
 import GameBoard from "./gameBoard";
 
 // !! TO-DO
-// -- recolor the device
-// -- decide what to do for the options menu
 // -- re-add options menu
 // -- restyle the background
+// -- re-add the :hover bg-linear for the fish button
+// -- add bubbles on WIN
 
 export default function Home() {
 	const [options, setOptions] = useState<Options>({
-		width: Size.EXTRALARGE,
+		width: Size.LARGE,
 		heigth: Size.AVERAGE,
 		difficulty: Difficulty.VERYHARD,
 	});
@@ -156,34 +156,34 @@ function Interface({
 	return (
 		<>
 			<Device>
-				<div className="flex h-full w-full flex-row gap-8">
-					<SideButtons
-						timer={getTimer(gameStatus)}
-						bombs={bombCounter(options, fieldHistory.present)}
-						handleGameRestart={() =>
-							setFieldHistory({
-								past: null,
-								present: Array<Row | null>(options.heigth)
-									.fill(null)
-									.map((r) =>
-										new Array<Tile>(options.width).fill({
-											type: "X",
-											mask: false,
-										}),
-									),
-								future: null,
-							})
-						}
+				<SideButtons
+					timer={getTimer(gameStatus)}
+					bombs={bombCounter(options, fieldHistory.present)}
+					options={options}
+					setOptions={setOptions}
+					handleGameRestart={(o: Options) =>
+					setFieldHistory({
+						past: null,
+						present: Array<Row | null>(o.heigth)
+							.fill(null)
+							.map((r) =>
+								new Array<Tile>(o.width).fill({
+									type: "X",
+									mask: false,
+								}),
+							),
+						future: null,
+					})
+				}
+				/>
+				<Display>
+					<GameBoard
+						options={options}
+						mineField={fieldHistory.present}
+						setMineField={handleSetPresentField}
+						gameStatus={gameStatus}
 					/>
-					<Display>
-						<GameBoard
-							options={options}
-							mineField={fieldHistory.present}
-							setMineField={handleSetPresentField}
-							gameStatus={gameStatus}
-						/>
-					</Display>
-				</div>
+				</Display>
 			</Device>
 			<Background gameStatus={gameStatus} />
 		</>
