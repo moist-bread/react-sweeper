@@ -12,17 +12,19 @@ import {
 } from "./types";
 import { checkWinCondition } from "./changeMineField";
 import { OptionsForm, ResetGame } from "./options";
-import { Timer, BombCounter, Background } from "./visualInformation";
+import { getTimer, bombCounter, Background } from "./visualInformation";
+import { Device, SideButtons, Display } from "./device";
 import GameBoard from "./gameBoard";
 
 // !! TO-DO
-// -- parallax background that follows the mouse
-// -- side menus in the right place
+// -- recolor the device
+// -- decide what to do for the options menu
+// -- re-add options menu
+// -- restyle the background
 
 export default function Home() {
-	const [gameSeed, setGameSeed] = useState<number>(0);
 	const [options, setOptions] = useState<Options>({
-		width: Size.LARGE,
+		width: Size.EXTRALARGE,
 		heigth: Size.AVERAGE,
 		difficulty: Difficulty.VERYHARD,
 	});
@@ -30,15 +32,8 @@ export default function Home() {
 	// console.log("HOME HAS RERENDERED");
 
 	return (
-		<div>
-			<h1 className="font-mono text-4xl font-bold">REACT SWEEPER</h1>
-			<h2 className="m-5 font-sans text-xl">the game</h2>
-			<Interface
-				key={gameSeed}
-				options={options}
-				setOptions={setOptions}
-				handleGameRestart={() => setGameSeed((s) => s + 1)}
-			/>
+		<div className="flex h-full w-full place-items-center justify-center-safe overflow-hidden bg-(--foreground)">
+			<Interface options={options} setOptions={setOptions} />
 		</div>
 	);
 }
@@ -46,11 +41,9 @@ export default function Home() {
 function Interface({
 	options,
 	setOptions,
-	handleGameRestart,
 }: {
 	options: Options;
 	setOptions: React.Dispatch<React.SetStateAction<Options>>;
-	handleGameRestart: () => void;
 }) {
 	const [fieldHistory, setFieldHistory] = useState<History>({
 		past: null,
@@ -62,7 +55,7 @@ function Interface({
 		future: null,
 	});
 
-	console.log(fieldHistory);
+	//console.log(fieldHistory);
 
 	function handleSetPresentField(f: Field) {
 		setFieldHistory({
@@ -75,7 +68,7 @@ function Interface({
 	const handleUndoField = useEffectEvent(() => {
 		if (fieldHistory.past === null) return;
 		console.log("UNDO");
-		console.log(fieldHistory);
+		//console.log(fieldHistory);
 
 		setFieldHistory({
 			past: null,
@@ -87,7 +80,7 @@ function Interface({
 	const handleRedoField = useEffectEvent(() => {
 		if (fieldHistory.future === null) return;
 		console.log("REDO");
-		console.log(fieldHistory);
+		//console.log(fieldHistory);
 
 		setFieldHistory({
 			past: fieldHistory.present,
@@ -161,23 +154,80 @@ function Interface({
 	}, []);
 
 	return (
-		<Background gameStatus={gameStatus}>
-			<ResetGame handleGameRestart={handleGameRestart} />
+		<>
+			<Device>
+				<div className="flex h-full w-full flex-row gap-8">
+					<SideButtons
+						timer={getTimer(gameStatus)}
+						bombs={bombCounter(options, fieldHistory.present)}
+						handleGameRestart={() =>
+							setFieldHistory({
+								past: null,
+								present: Array<Row | null>(options.heigth)
+									.fill(null)
+									.map((r) =>
+										new Array<Tile>(options.width).fill({
+											type: "X",
+											mask: false,
+										}),
+									),
+								future: null,
+							})
+						}
+					/>
+					<Display>
+						<GameBoard
+							options={options}
+							mineField={fieldHistory.present}
+							setMineField={handleSetPresentField}
+							gameStatus={gameStatus}
+						/>
+					</Display>
+				</div>
+			</Device>
+			<Background gameStatus={gameStatus} />
+		</>
+	);
+
+	/* return (
+		<div className="flex h-full w-full flex-col place-items-center justify-center-safe">
+			<Background gameStatus={gameStatus} />
+			<ResetGame
+				handleGameRestart={() =>
+					setFieldHistory({
+						past: null,
+						present: Array<Row | null>(options.heigth)
+							.fill(null)
+							.map((r) =>
+								new Array<Tile>(options.width).fill({
+									type: "X",
+									mask: false,
+								}),
+							),
+						future: null,
+					})
+				}
+			/>
 			<OptionsForm
 				options={options}
 				setOptions={setOptions}
-				handleGameRestart={handleGameRestart}
+				handleGameRestart={(o: Options) =>
+					setFieldHistory({
+						past: null,
+						present: Array<Row | null>(o.heigth)
+							.fill(null)
+							.map((r) =>
+								new Array<Tile>(o.width).fill({
+									type: "X",
+									mask: false,
+								}),
+							),
+						future: null,
+					})
+				}
 			/>
-			<Timer status={gameStatus} />
-			<BombCounter options={options} mineField={fieldHistory.present} />
-			<GameBoard
-				options={options}
-				mineField={fieldHistory.present}
-				setMineField={handleSetPresentField}
-				gameStatus={gameStatus}
-			/>
-		</Background>
-	);
+		</div>
+	); */
 }
 
 function detectGameState(mineField: Field): GameStates {

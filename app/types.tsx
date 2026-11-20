@@ -41,9 +41,9 @@ export enum Difficulty {
 export enum Size {
 	EXTRASMALL = 5,
 	SMALL = 10,
-	AVERAGE = 15,
-	LARGE = 30,
-	EXTRALARGE = 45,
+	AVERAGE = 20,
+	LARGE = 25,
+	EXTRALARGE = 35,
 }
 
 export type Options = {

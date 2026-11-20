@@ -5,6 +5,7 @@
 	--foreground: #171717;
 	--accent: #009999;
 	--highlight: #0000ce;
+	--sky: #86c9ea;
 }
 
 @media (prefers-color-scheme: dark) {

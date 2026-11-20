@@ -7,7 +7,6 @@ export function generateMineField(options: Options, y: number, x: number) {
 		.map((r) =>
 			new Array<Tile>(options.width).fill({ type: " ", mask: false }),
 		);
-	/* console.log("force empty area at ", y, x); */
 
 	if (options.width <= 3 && options.heigth <= 3) return tempField;
 
@@ -24,7 +23,6 @@ export function generateMineField(options: Options, y: number, x: number) {
 		) {
 			tempField[bombY][bombX] = { type: "B", mask: false };
 			placedBombs++;
-			/* console.log("placing bomb ", placedBombs, " on ", bombY, bombX); */
 		}
 	}
 
@@ -94,17 +92,10 @@ function floodFill(
 export function toggleFlagAt(mineField: Field, y: number, x: number) {
 	let tempField: Field = mineField.slice().map((r) => Array.from(r));
 
-	if (tempField[y][x].mask === false) {
-		console.log("SET FLAG AT", y, x);
-	} else if (tempField[y][x].mask === "flag") {
-		console.log("REMOVE FLAG AT", y, x);
-	}
-
 	tempField[y][x] = {
 		...tempField[y][x],
 		mask: tempField[y][x].mask === false ? "flag" : false,
 	};
-
 	return tempField;
 }
 
@@ -129,7 +120,6 @@ export function exposeNeighours(
 		}
 
 	if (flagCount !== mineField[y][x].type || hiddenTiles === 0) {
-		console.log("stays the same...");
 		return mineField;
 	}
 
@@ -148,25 +138,14 @@ export function exposeNeighours(
 }
 
 export function checkWinCondition(mineField: Field) {
-	//console.log("CHECKING WIN...");
-	// console.log(mineField);
 	// to win: all non bomb spaces are mask true
 	for (let idx_row = 0; idx_row < mineField.length; idx_row++) {
 		const row = mineField[idx_row];
 		for (let idx_tile = 0; idx_tile < row.length; idx_tile++) {
 			const tile = row[idx_tile];
-			if (tile.type !== "B" && tile.mask !== true) {
-				/* console.log(
-					"failed because of",
-					tile.type,
-					"at",
-					idx_row,
-					idx_tile,
-				); */
-				return false;
-			}
+			if (tile.type !== "B" && tile.mask !== true) return false;
 		}
 	}
-	console.log("WON!");
+	// console.log("WON!");
 	return true;
 }

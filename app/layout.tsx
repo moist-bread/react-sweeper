@@ -6,6 +6,7 @@ import {
 } from "next/font/google";
 
 import "./globals.css";
+import '@frutiger.js/core/styles.css';
 
 const robotoMono = Roboto_Mono({
 	variable: "--font-roboto-mono",

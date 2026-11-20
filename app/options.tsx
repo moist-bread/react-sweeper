@@ -1,10 +1,11 @@
 "use client";
-import { useState, useRef } from "react";
-import { GameStates, Tile, Row, Options, Difficulty, Size } from "./types";
-import { checkWinCondition } from "./changeMineField";
+import { Options, Size, Difficulty } from "./types";
 
-
-export function ResetGame({ handleGameRestart }: { handleGameRestart: () => void }) {
+export function ResetGame({
+	handleGameRestart,
+}: {
+	handleGameRestart: () => void;
+}) {
 	return (
 		<button
 			className="m-2 cursor-pointer bg-(--accent) p-2 font-bold"
@@ -15,7 +16,6 @@ export function ResetGame({ handleGameRestart }: { handleGameRestart: () => void
 	);
 }
 
-
 export function OptionsForm({
 	options,
 	setOptions,
@@ -23,7 +23,7 @@ export function OptionsForm({
 }: {
 	options: Options;
 	setOptions: React.Dispatch<React.SetStateAction<Options>>;
-	handleGameRestart: () => void;
+	handleGameRestart: (o: Options) => void;
 }) {
 	return (
 		<form
@@ -31,12 +31,13 @@ export function OptionsForm({
 			method="post"
 			onSubmit={(e: React.SubmitEvent) => {
 				e.preventDefault();
-				setOptions({
+				const newOptions: Options = {
 					width: parseInt(e.target.width.value),
 					heigth: parseInt(e.target.heigth.value),
 					difficulty: parseInt(e.target.difficulty.value),
-				});
-				handleGameRestart();
+				};
+				setOptions(newOptions);
+				handleGameRestart(newOptions);
 			}}
 		>
 			<div className="flex flex-row gap-5">
@@ -55,9 +56,6 @@ export function OptionsForm({
 						<option value={Size.SMALL}>{Size.SMALL}</option>
 						<option value={Size.AVERAGE}>{Size.AVERAGE}</option>
 						<option value={Size.LARGE}>{Size.LARGE}</option>
-						<option value={Size.EXTRALARGE}>
-							{Size.EXTRALARGE}
-						</option>
 					</select>
 				</label>
 			</div>
